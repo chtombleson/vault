@@ -6,8 +6,11 @@ An encrypted document and key value store.
 
 SQLCipher
 
-    ubuntu & debain
-    $ sudo apt-get install libsqlcipher0 libsqlcipher-dev
+    $ git clone https://github.com/sqlcipher/sqlcipher.git
+    $ cd sqlcipher
+    $ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC -DSQLITE_TEMP_STORE=2" LDFLAGS="-lcrypto"
+    $ make
+    $ sudo make install
 
 ## Building
 
