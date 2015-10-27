@@ -1,6 +1,3 @@
-[submodule "deps/sqlcipher"]
-	path = deps/sqlcipher
-	url = https://github.com/sqlcipher/sqlcipher.git
 [submodule "deps/commander"]
 	path = deps/commander
 	url = https://github.com/clibs/commander.git
