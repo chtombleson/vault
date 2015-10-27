@@ -7,8 +7,9 @@
 struct vault {
     const char *database;
     const char *password;
-    sqlite3 *sqlite;
 };
 
-struct vault vault_init(const char * database, const char * password);
+sqlite3 *sqlite_db;
 
+struct vault vault_init(const char * database);
+void vault_close();

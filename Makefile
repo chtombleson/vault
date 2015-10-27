@@ -11,10 +11,10 @@ commander.o:
 	gcc -c deps/commander/src/commander.c -o commander.o -std=c99
 
 vault.o:
-	gcc -c src/vault.c -o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS)
+	gcc -c src/vault.c -o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS) -Wall
 
 main:
-	gcc src/main.c commander.o output.o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS) -g -o bin/vault
+	gcc src/main.c commander.o output.o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS) -Wall -o bin/vault
 
 clean:
 	rm -f *.o
