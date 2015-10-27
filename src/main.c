@@ -34,7 +34,9 @@ int main(int argc, char **argv) {
         output_error("Database is required: ./vault --database test.db\n");
     }
 
-    vault_init(args.database, args.password);
+    struct vault vault;
+    vault = vault_init(args.database, args.password);
+    vault_close(vault);
 
     return 0;
 }

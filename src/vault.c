@@ -39,7 +39,7 @@ struct vault vault_init(const char * database, const char * password) {
         exit(1);
     }
 
-    //sqlite3_key(&db, vault.password, strlen(vault.password));
+    sqlite3_key(db, vault.password, strlen(vault.password));
 
     vault.sqlite = db;
 

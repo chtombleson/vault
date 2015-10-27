@@ -14,7 +14,7 @@ vault.o:
 	gcc -c src/vault.c -o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS)
 
 main:
-	gcc src/main.c commander.o output.o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS) -o bin/vault
+	gcc src/main.c commander.o output.o vault.o $(INCLUDES) $(LIB_DIR) $(LIBS) -g -o bin/vault
 
 clean:
 	rm -f *.o
