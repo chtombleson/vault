@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     const char *database = 0;
     const char *password = 0;
 
-    opt = getopt_long(argc, argv, "d:p::vh", long_options, &long_index);
+    opt = getopt_long(argc, argv, "d:p:vh", long_options, &long_index);
 
     while (opt != -1) {
         switch (opt) {
@@ -50,29 +50,17 @@ int main(int argc, char **argv) {
                 break;
         }
 
-        opt = getopt_long(argc, argv, "d:p::vh", long_options, &long_index);
+        opt = getopt_long(argc, argv, "d:p:vh", long_options, &long_index);
     }
 
-    // Much sure database option is not empty
-    if (!database) {
+    // Much sure database and password option is not empty
+    if (!database || !password) {
         vault_print_help();
         exit(1);
     }
 
-    printf("Database: %s\n", database);
-
-    if (password) {
-        printf("Password: %s\n", password);
-    }
-
-    /*
-    // Much sure database option is not empty
-    if (!args.database) {
-        output_error("Database is required: ./vault --database test.db\n");
-    }
-
-    int initialised = vault_init(args.database);
-    vault_close();*/
+    int initialised = vault_init(database, password);
+    vault_close();
 
     return 0;
 }

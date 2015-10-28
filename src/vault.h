@@ -6,7 +6,7 @@
 
 sqlite3 *sqlite_db;
 
-int vault_init(const char *database);
+int vault_init(const char *database, const char *password);
 void vault_close();
 
 void vault_print_help();
