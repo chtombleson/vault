@@ -8,15 +8,13 @@
 #include "output.h"
 #include "vault.h"
 
-struct vault vault_init(const char * database) {
-    struct vault vault;
-
-    vault.database = database;
+int vault_init(const char *database) {
+    printf("Database: %s", database);
 
     // Get the password
-    char pass[64];
+    char password[64];
 
-    while (strlen(pass) < 8) {
+    while (strlen(password) < 8) {
         printf(
             "%s%s%s: ",
             OUTPUT_COLOR_YELLOW,
@@ -24,13 +22,11 @@ struct vault vault_init(const char * database) {
             OUTPUT_COLOR_RESET
         );
 
-        scanf("%s", pass);
+        scanf("%s", password);
     }
 
-    vault.password = pass;
-
     int rc = sqlite3_open_v2(
-        vault.database,
+        database,
         &sqlite_db,
         SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE,
         0
@@ -40,10 +36,10 @@ struct vault vault_init(const char * database) {
         output_warning("Warning unable to open database");
         sqlite3_close(sqlite_db);
 
-        exit(1);
+        return 0;
     }
 
-    sqlite3_key(sqlite_db, vault.password, strlen(vault.password));
+    sqlite3_key(sqlite_db, password, strlen(password));
 
     char * err_msg = 0;
     int res = sqlite3_exec(
@@ -58,10 +54,10 @@ struct vault vault_init(const char * database) {
         output_warning(err_msg);
         sqlite3_close(sqlite_db);
 
-        exit(1);
+        return 0;
     }
 
-    return vault;
+    return 1;
 }
 
 void vault_close() {
@@ -70,5 +66,13 @@ void vault_close() {
     }
 
     sqlite3_shutdown();
+}
+
+void vault_print_help() {
+    printf("Usage: vault --database <database> [options]\n");
+    printf("\t--database\tPath to vault database\n");
+    printf("\t--password\tPassword for vault database\n");
+    printf("\t--version \tVersion details\n");
+    printf("\t--help    \tShow this message\n");
 }
 

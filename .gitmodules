@@ -1,3 +1,0 @@
-[submodule "deps/commander"]
-	path = deps/commander
-	url = https://github.com/clibs/commander.git
