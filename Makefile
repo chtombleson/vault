@@ -1,6 +1,6 @@
 INCLUDES=-I /usr/local/include/sqlcipher
 LIB_DIR=-L /usr/local/lib/libsqlcipher.a
-LIBS=-lsqlcipher
+LIBS=-lsqlcipher -luuid
 
 all: output.o vault.o main
 
@@ -15,4 +15,5 @@ main:
 
 clean:
 	rm -f *.o
-	rm test.db
+	if [ -f "test.db" ]; then rm test.db; fi;
+

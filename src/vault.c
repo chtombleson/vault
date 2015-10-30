@@ -5,13 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <uuid/uuid.h>
 #include "output.h"
 #include "vault.h"
 
-int vault_init(const char *database, const char *password) {
-    printf("Database: %s\n", database);
-    printf("Password: %s\n", password);
+const char *database_key_value_schema = "CREATE TABLE IF NOT EXISTS"
+                                        " key_value(uuid VARCHAR PRIMARY KEY,"
+                                        " name VARCHAR UNIQUE, value TEXT)";
 
+int vault_init(const char *database, const char *password) {
     // Connect to database
     int rc = sqlite3_open(
         database,
@@ -36,9 +38,10 @@ int vault_init(const char *database, const char *password) {
         return 0;
     }
 
-    /*res = sqlite3_exec(
+    // Create schema if needed
+    res = sqlite3_exec(
         sqlite_db,
-        "create table if not exists key_value(id INTEGER PRIMARY KEY, key VARCHAR(128), value TEXT);",
+        database_key_value_schema,
         0,
         0,
         &err_msg
@@ -49,9 +52,44 @@ int vault_init(const char *database, const char *password) {
         vault_close();
 
         return 0;
-    }*/
+    }
+
+    vault_add_key_value_record("hello", "world");
 
     return 1;
+}
+
+void vault_add_key_value_record(const char *name, const char *value) {
+    sqlite3_stmt *stmt;
+    const char *sql = "INSERT INTO key_value (uuid, name, value) VALUES (?, ?, ?)";
+
+    // Get uuid
+    uuid_t uuid;
+    uuid_generate_time_safe(uuid);
+
+    char uuid_str[37];
+    uuid_unparse_lower(uuid, uuid_str);
+
+    // Prepare sql
+    int res = sqlite3_prepare_v2(
+        sqlite_db,
+        sql,
+        -1,
+        &stmt,
+        0
+    );
+
+    if (res == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, uuid_str, sizeof(uuid_str), 0);
+        sqlite3_bind_text(stmt, 2, name, strlen(name), 0);
+        sqlite3_bind_text(stmt, 3, value, strlen(value), 0);
+
+        res = sqlite3_step(stmt);
+
+        if (res == SQLITE_OK) {
+            sqlite3_finalize(stmt);
+        }
+    }
 }
 
 void vault_close() {

@@ -13,6 +13,10 @@ SQLCipher
     $ sudo make install
     $ sudo ldconfig
 
+UUID
+
+    $ sudo apt-get install uuid-dev
+
 ## Building
 
     $ git clone https://github.com/chtombleson/vault.git
