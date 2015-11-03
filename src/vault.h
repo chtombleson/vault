@@ -13,5 +13,3 @@ int vault_init(const char *database, const char *password);
 void vault_add_key_value_record(const char *name, const char *value);
 void vault_close();
 
-void vault_print_help();
-

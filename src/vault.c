@@ -54,8 +54,6 @@ int vault_init(const char *database, const char *password) {
         return 0;
     }
 
-    vault_add_key_value_record("hello", "world");
-
     return 1;
 }
 
@@ -90,6 +88,8 @@ void vault_add_key_value_record(const char *name, const char *value) {
             sqlite3_finalize(stmt);
         }
     }
+
+    uuid_clear(uuid);
 }
 
 void vault_close() {

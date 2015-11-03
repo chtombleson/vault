@@ -8,6 +8,14 @@
 #include "vault.h"
 #include "output.h"
 
+void print_usage() {
+    printf("Usage: vault --database <database> --password <password>\n");
+    printf("\t--database\tPath to vault database\n");
+    printf("\t--password\tPassword for vault database\n");
+    printf("\t--version \tVersion details\n");
+    printf("\t--help    \tShow this message\n");
+}
+
 int main(int argc, char **argv) {
     // Parse command line arguments
     static struct option long_options[] = {
@@ -42,7 +50,7 @@ int main(int argc, char **argv) {
                 break;
 
             case 'h':
-                vault_print_help();
+                print_usage();
                 exit(0);
                 break;
 
@@ -55,11 +63,18 @@ int main(int argc, char **argv) {
 
     // Much sure database and password option is not empty
     if (!database || !password) {
-        vault_print_help();
+        print_usage();
         exit(1);
     }
 
     int initialised = vault_init(database, password);
+
+    if (!initialised) {
+        output_warning("Unable to initialise vault");
+        vault_close();
+        exit(1);
+    }
+
     vault_close();
 
     return 0;
