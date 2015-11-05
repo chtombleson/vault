@@ -1,6 +1,9 @@
 /**
  * output.h
  */
+#ifndef _OUTPUT_H_
+#define _OUTPUT_H_
+
 #define OUTPUT_COLOR_RESET          "\033[0m"
 #define OUTPUT_COLOR_BLACK          "\033[22;30m"
 #define OUTPUT_COLOR_WHITE          "\033[01;37m"$
@@ -23,4 +26,6 @@ void output_error(const char * msg);
 void output_warning(const char * msg);
 void output_debug(const char * msg);
 void output_info(const char * msg);
+
+#endif
 

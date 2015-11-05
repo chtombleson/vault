@@ -21,6 +21,7 @@ UUID
 
     $ git clone https://github.com/chtombleson/vault.git
     $ cd vault
+    $ git submodule update --recursive
     $ make
 
 ## Usage

@@ -5,8 +5,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
+#include <signal.h>
 #include "vault.h"
 #include "output.h"
+#include "shell.h"
+
+void signal_handler(int signal) {
+    switch (signal) {
+        case SIGINT:
+            shell_close();
+            break;
+    }
+}
 
 void print_usage() {
     printf("Usage: vault --database <database> --password <password>\n");
@@ -17,6 +27,9 @@ void print_usage() {
 }
 
 int main(int argc, char **argv) {
+    // Signal handler
+    signal(SIGINT, signal_handler);
+
     // Parse command line arguments
     static struct option long_options[] = {
         {"database", required_argument, NULL, 'd'},
@@ -67,6 +80,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    // Initialise vault
     int initialised = vault_init(database, password);
 
     if (!initialised) {
@@ -75,6 +89,10 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    // Run the shell interface
+    shell_run();
+
+    // Close the vault
     vault_close();
 
     return 0;
